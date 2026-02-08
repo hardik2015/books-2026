@@ -163,6 +163,16 @@ export default defineComponent({
       await this.searcher.initializeKeywords();
     },
     async setDesk(filePath: string): Promise<void> {
+      // Validate license binding before allowing access to the application
+      const { validateLicenseBinding } = await import('src/utils/licenseBindingValidator');
+      const isValid = await validateLicenseBinding(fyo);
+
+      if (!isValid) {
+        // If license is invalid, show error and redirect to setup
+        await this.showDbSelector();
+        return;
+      }
+
       await setLanguageMap();
       this.activeScreen = Screen.Desk;
       await this.setDeskRoute();
@@ -175,6 +185,10 @@ export default defineComponent({
       )) as string;
       await this.setSearcher();
       updateConfigFiles(fyo);
+
+      // Start periodic license validation checks
+      const { startPeriodicLicenseChecks } = await import('src/utils/licenseBindingValidator');
+      await startPeriodicLicenseChecks(fyo, 60); // Check every hour
     },
     newDatabase() {
       this.activeScreen = Screen.SetupWizard;
@@ -203,9 +217,23 @@ export default defineComponent({
     async setupComplete(setupWizardOptions: SetupWizardOptions): Promise<void> {
       const companyName = setupWizardOptions.companyName;
       const filePath = await ipc.getDbDefaultPath(companyName);
-      await setupInstance(filePath, setupWizardOptions, fyo);
-      fyo.config.set('lastSelectedFilePath', filePath);
-      await this.setDesk(filePath);
+
+      try {
+        await setupInstance(filePath, setupWizardOptions, fyo);
+        fyo.config.set('lastSelectedFilePath', filePath);
+        await this.setDesk(filePath);
+      } catch (error) {
+        // If setup failed due to license verification, return to setup wizard
+        if (error instanceof Error && error.message.includes('License verification')) {
+          await handleErrorWithDialog(error, undefined, true, true);
+          // Return to setup wizard to allow user to enter a different license key
+          this.activeScreen = Screen.SetupWizard;
+        } else {
+          // For other errors, show error dialog and return to database selector
+          await handleErrorWithDialog(error, undefined, true, true);
+          await this.showDbSelector();
+        }
+      }
     },
     async showSetupWizardOrDesk(filePath: string): Promise<void> {
       const { countryCode, error, actionSymbol } = await connectToDatabase(

@@ -82,6 +82,22 @@
       "required": true
     },
     {
+      "fieldname": "licenseKey",
+      "label": "License Key",
+      "fieldtype": "Data",
+      "placeholder": "Enter your license key",
+      "section": "Licensing",
+      "description": "Enter your license key for this installation"
+    },
+    {
+      "fieldname": "companyRegistrationNumber",
+      "label": "Company Registration Number",
+      "fieldtype": "Data",
+      "placeholder": "Enter company registration number",
+      "section": "Licensing",
+      "description": "Company registration number for license binding"
+    },
+    {
       "fieldname": "completed",
       "label": "Completed",
       "fieldtype": "Check",
@@ -96,6 +112,8 @@
     "currency",
     "chartOfAccounts",
     "fiscalYearStart",
-    "fiscalYearEnd"
+    "fiscalYearEnd",
+    "licenseKey",
+    "companyRegistrationNumber"
   ]
 }

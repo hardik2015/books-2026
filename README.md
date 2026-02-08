@@ -21,8 +21,6 @@
 <br />
 <div align="center">
 	<a href="https://frappe.io/books">Website</a>
-	-
-	<a href="https://docs.frappe.io/books">Documentation</a>
 </div>
 
 ## Frappe Books
@@ -190,4 +188,3 @@ If you want to contribute code then you can fork this repo, make changes and rai
 
 - [Telegram Group](https://t.me/frappebooks): Used for discussions and decisions regarding everything Frappe Books.
 - [GitHub Discussions](https://github.com/frappe/books/discussions): Used for discussions around a specific topic.
-- [Documentation](https://docs.frappe.io/books): Official documentation for more details.

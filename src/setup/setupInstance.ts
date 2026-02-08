@@ -27,14 +27,36 @@ import { getCountryCodeFromCountry, getCountryInfo } from 'utils/misc';
 import { CountryInfo } from 'utils/types';
 import { CreateCOA } from './createCOA';
 import { SetupWizardOptions } from './types';
+import { verifyLicenseKey, showLicenseVerificationError, LicenseVerificationResult, CompanyInfo } from 'src/utils/licenseVerification';
 
 export default async function setupInstance(
   dbPath: string,
   setupWizardOptions: SetupWizardOptions,
   fyo: Fyo
 ) {
-  const { companyName, country, bankName, chartOfAccounts } =
+  const { companyName, country, bankName, chartOfAccounts, licenseKey, fullname, email } =
     setupWizardOptions;
+
+  // Verify license key before proceeding with database creation
+  if (licenseKey) {
+    // Prepare company information for license binding
+    const companyInfo: CompanyInfo = {
+      companyName,
+      email,
+      instanceId: getRandomString(), // Generate unique instance ID
+      companyRegistrationNumber: setupWizardOptions.companyRegistrationNumber // If available in options
+    };
+
+    const verificationResult = await verifyLicenseKey(licenseKey, companyInfo);
+
+    if (!verificationResult.isValid) {
+      await showLicenseVerificationError(verificationResult.error || verificationResult.message || 'Invalid license key');
+      throw new Error(verificationResult.error || verificationResult.message || 'License verification failed');
+    }
+
+    // Store bound company information in SystemSettings
+    await updateSystemSettings({...setupWizardOptions, licenseKey}, fyo);
+  }
 
   fyo.store.skipTelemetryLogging = true;
   await initializeDatabase(dbPath, country, fyo);
@@ -121,7 +143,7 @@ async function updatePrintSettings(
 }
 
 async function updateSystemSettings(
-  { country, currency: companyCurrency }: SetupWizardOptions,
+  { country, currency: companyCurrency, licenseKey, companyName, email, companyRegistrationNumber }: SetupWizardOptions,
   fyo: Fyo
 ) {
   const countryInfo = getCountryInfo();
@@ -133,12 +155,26 @@ async function updateSystemSettings(
   const systemSettings = await fyo.doc.getDoc('SystemSettings');
   const instanceId = getRandomString();
 
-  await systemSettings.setAndSync({
+  const systemSettingsData: Record<string, any> = {
     locale,
     currency,
     instanceId,
     countryCode,
-  });
+  };
+
+  // Add license key if provided
+  if (licenseKey) {
+    systemSettingsData.licenseKey = licenseKey;
+  }
+
+  // Add bound company information if license is provided
+  if (licenseKey && companyName) {
+    systemSettingsData.boundCompanyName = companyName;
+    systemSettingsData.boundCompanyRegistrationNumber = companyRegistrationNumber;
+    systemSettingsData.licenseBound = true; // Mark that license is bound
+  }
+
+  await systemSettings.setAndSync(systemSettingsData);
 }
 
 async function createCurrencyRecords(fyo: Fyo) {
@@ -247,7 +283,8 @@ async function setDefaultAccount(key: string, accountName: string, fyo: Fyo) {
 }
 
 async function completeSetup(companyName: string, fyo: Fyo) {
-  await fyo.singles.AccountingSettings!.setAndSync('setupComplete', true);
+  const accountingSettings = await fyo.doc.getDoc('AccountingSettings');
+  await accountingSettings.setAndSync('setupComplete', true);
 }
 
 async function checkAndCreateDoc(

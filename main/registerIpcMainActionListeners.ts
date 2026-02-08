@@ -44,18 +44,11 @@ export default function registerIpcMainActionListeners(main: Main) {
   ipcMain.handle(
     IPC_ACTIONS.GET_DB_DEFAULT_PATH,
     async (_, companyName: string) => {
-      let root: string;
-      try {
-        root = app.getPath('documents');
-      } catch {
-        root = app.getPath('userData');
-      }
+      // Get the directory where the executable is located
+      const exeDir = path.dirname(app.getPath('exe'));
 
-      if (main.isDevelopment) {
-        root = 'dbs';
-      }
-
-      const dbsPath = path.join(root, 'Frappe Books');
+      // Create the "info" folder in the executable directory
+      const dbsPath = path.join(exeDir, 'info');
       const backupPath = path.join(dbsPath, 'backups');
       await fs.ensureDir(backupPath);
 

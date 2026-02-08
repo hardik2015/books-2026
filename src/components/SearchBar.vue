@@ -192,18 +192,6 @@
             <p>↑↓ {{ t`Navigate` }}</p>
             <p>↩ {{ t`Select` }}</p>
             <p><span class="tracking-tighter">esc</span> {{ t`Close` }}</p>
-            <button
-              class="
-                flex
-                items-center
-                hover:text-gray-800
-                dark:hover:text-gray-300
-              "
-              @click="openDocs"
-            >
-              <feather-icon name="help-circle" class="w-4 h-4 me-1" />
-              {{ t`Help` }}
-            </button>
           </div>
 
           <p v-if="searcher?.numSearches" class="ms-auto">
@@ -356,9 +344,6 @@ export default defineComponent({
     this.shortcuts?.delete(COMPONENT_NAME);
   },
   methods: {
-    openDocs() {
-      ipc.openLink('https://docs.frappe.io/' + docsPathMap.Search);
-    },
     getShortcuts() {
       const ifOpen = (cb: Function) => () => this.openModal && cb();
       const ifClose = (cb: Function) => () => !this.openModal && cb();

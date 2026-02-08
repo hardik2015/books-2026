@@ -109,23 +109,6 @@
 
     <!-- Report Issue and DB Switcher -->
     <div class="window-no-drag flex flex-col gap-2 py-2 px-4">
-      <button
-        class="
-          flex
-          text-sm text-gray-600
-          dark:text-gray-500
-          hover:text-gray-800
-          dark:hover:text-gray-400
-          gap-1
-          items-center
-        "
-        @click="openDocumentation"
-      >
-        <feather-icon name="help-circle" class="h-4 w-4 flex-shrink-0" />
-        <p>
-          {{ t`Help` }}
-        </p>
-      </button>
 
       <button
         class="
@@ -280,7 +263,6 @@ export default defineComponent({
         this.toggleSidebar();
       }
     });
-    this.shortcuts?.set(COMPONENT_NAME, ['F1'], () => this.openDocumentation());
 
     this.showDevMode = this.fyo.store.isDevelopment;
   },
@@ -291,9 +273,6 @@ export default defineComponent({
     routeTo,
     reportIssue,
     toggleSidebar,
-    openDocumentation() {
-      ipc.openLink('https://docs.frappe.io/' + docsPathRef.value);
-    },
     setActiveGroup() {
       const { fullPath } = this.$router.currentRoute.value;
       const fallBackGroup = this.activeGroup;

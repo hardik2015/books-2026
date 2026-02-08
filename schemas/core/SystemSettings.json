@@ -148,6 +148,40 @@
       "fieldtype": "Check",
       "default": false,
       "section": "Customizations"
+    },
+    {
+      "fieldname": "licenseKey",
+      "label": "License Key",
+      "fieldtype": "Data",
+      "default": "",
+      "section": "Licensing",
+      "description": "Enter your license key for this installation",
+      "readOnly": true
+    },
+    {
+      "fieldname": "boundCompanyName",
+      "label": "Bound Company Name",
+      "fieldtype": "Data",
+      "readOnly": true,
+      "section": "Licensing",
+      "description": "Company name bound to this license - cannot be changed"
+    },
+    {
+      "fieldname": "boundCompanyRegistrationNumber",
+      "label": "Bound Registration Number",
+      "fieldtype": "Data",
+      "readOnly": true,
+      "section": "Licensing",
+      "description": "Company registration number bound to this license - cannot be changed"
+    },
+    {
+      "fieldname": "licenseBound",
+      "label": "License Bound",
+      "fieldtype": "Check",
+      "default": false,
+      "readOnly": true,
+      "hidden": true,
+      "section": "Licensing"
     }
   ],
   "quickEditFields": [
