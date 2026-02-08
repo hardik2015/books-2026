@@ -167,12 +167,12 @@
       "description": "Company name bound to this license - cannot be changed"
     },
     {
-      "fieldname": "boundCompanyRegistrationNumber",
-      "label": "Bound Registration Number",
-      "fieldtype": "Data",
+      "fieldname": "boundLicenseExpiryDate",
+      "label": "Bound License Expiry Date",
+      "fieldtype": "Date",
       "readOnly": true,
       "section": "Licensing",
-      "description": "Company registration number bound to this license - cannot be changed"
+      "description": "Expiry date bound to this license - cannot be changed"
     },
     {
       "fieldname": "licenseBound",

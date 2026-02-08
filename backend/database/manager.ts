@@ -234,6 +234,10 @@ export class DatabaseManager extends DatabaseDemuxBase {
 
     return BetterSQLite3(dbPath, { readonly: true });
   }
+
+  private escapeString(str: string): string {
+    return str.replace(/'/g, "''");
+  }
 }
 
 export default new DatabaseManager();

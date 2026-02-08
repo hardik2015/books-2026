@@ -22,7 +22,7 @@
       <!-- Welcome to Frappe Books -->
       <div class="px-4 py-4">
         <h1 class="text-2xl font-semibold select-none dark:text-gray-25">
-          {{ t`Welcome to Frappe Books` }}
+          {{ t`Welcome to Bill Book` }}
         </h1>
         <p class="text-gray-600 dark:text-gray-400 text-base select-none">
           {{
@@ -168,6 +168,9 @@
           "
           :disabled="creatingDemo"
           @click="createDemo"
+        >
+          {{ t`Create Demo Company` }}
+        </button>
       </div>
     </div>
   </div>

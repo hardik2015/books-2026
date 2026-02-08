@@ -1,5 +1,5 @@
-productName: Frappe Books
-appId: io.frappe.books
+productName: Bill Book
+appId: io.alakh.billbook
 asarUnpack: '**/*.node'
 extraResources:
   [
@@ -21,7 +21,7 @@ mac:
   publish:
     - github
 win:
-  publisherName: Frappe Technologies Pvt. Ltd.
+  publisherName: Alakh Solutions
   signDlls: true
   icon: build/icon.ico
   publish:

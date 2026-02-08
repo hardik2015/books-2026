@@ -1,10 +1,10 @@
 {
-  "name": "frappe-books",
+  "name": "bill-book",
   "version": "0.36.0",
-  "description": "Simple book-keeping app for everyone",
+  "description": "Professional billing and invoicing solution",
   "author": {
-    "name": "Frappe Technologies Pvt. Ltd.",
-    "email": "hello@frappe.io"
+    "name": "Alakh Solutions (Derivative work based on Frappe Books by Frappe Technologies Pvt. Ltd.)",
+    "email": "herry2015hhv@gmail.com"
   },
   "scripts": {
     "dev": "node build/scripts/dev.mjs",
@@ -91,9 +91,9 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "homepage": "https://frappe.io/books",
+  "homepage": "https://github.com/hardik2015/books-2026",
   "repository": {
-    "url": "https://github.com/frappe/books"
+    "url": "https://github.com/hardik2015/books-2026"
   },
   "license": "AGPL-3.0-only"
 }

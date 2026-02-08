@@ -13,7 +13,7 @@ const appSourcePath = path.join(root, 'dist_electron', 'build', 'main.js');
   window.setDefaultTimeout(60_000);
 
   test('load app', async (t) => {
-    t.equal(await window.title(), 'Frappe Books', 'title matches');
+    t.equal(await window.title(), 'Bill Book', 'title matches');
 
     await new Promise((r) => window.once('load', () => r()));
     t.ok(true, 'window has loaded');

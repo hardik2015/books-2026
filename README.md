@@ -1,17 +1,17 @@
 <div align="center" markdown="1">
 <br/>
 
-<img src="https://frappe.io/files/books.png" alt="Frappe Books logo" width="80"/>
+<img src="https://frappe.io/files/books.png" alt="Bill Book logo" width="80"/>
 
 <br/>
 
-<h1>Frappe Books</h1>
+<h1>Bill Book</h1>
 
-**Modern Accounting Made Simple**
+**Professional Billing and Invoicing Solution**
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/frappe/books)](https://github.com/frappe/books/releases)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/hardik2015/books-2026)](https://github.com/hardik2015/books-2026/releases)
 ![Platforms](https://img.shields.io/badge/platform-mac%2C%20windows%2C%20linux-yellowgreen)
-[![Publish](https://github.com/frappe/books/actions/workflows/publish.yml/badge.svg)](https://github.com/frappe/books/actions/workflows/publish.yml)
+[![Publish](https://github.com/hardik2015/books-2026/actions/workflows/publish.yml/badge.svg)](https://github.com/hardik2015/books-2026/actions/workflows/publish.yml)
 
 </div>
 
@@ -20,12 +20,12 @@
 </div>
 <br />
 <div align="center">
-	<a href="https://frappe.io/books">Website</a>
+	<a href="https://github.com/hardik2015/books-2026">Website</a>
 </div>
 
-## Frappe Books
+## Bill Book
 
-Frappe Books is an open-source accounting software aimed at simplifying financial management for businesses. With its clean and user-friendly interface, it streamlines accounting tasks for small and medium-sized enterprises, offering a seamless solution for modern businesses to manage their finances with ease.
+Bill Book is a professional billing and invoicing solution with advanced licensing and update systems. This software is a modified version of Frappe Books, originally developed by Frappe Technologies Pvt. Ltd. under the terms of the AGPL 3.0 license.
 
 <details>
 <summary>Screenshots</summary>
@@ -40,7 +40,7 @@ Frappe Books is an open-source accounting software aimed at simplifying financia
 
 ### Motivation
 
-Frappe Books addresses a market gap where small businesses face expensive, complex accounting tools. It offers an intuitive, open-source solution that combines simplicity with essential features, empowering businesses to manage finances effectively—even offline.
+Bill Book builds upon the foundation of Frappe Books to provide enhanced licensing and update management features. It offers a professional billing and invoicing solution with robust license validation and automated update capabilities.
 
 ### Key Features
 
@@ -62,11 +62,15 @@ Frappe Books addresses a market gap where small businesses face expensive, compl
 
 ### Under the Hood
 
-- **Vue.js**: In Frappe Books, Vue.js powers the front-end, enabling a reactive and component-based UI. It ensures seamless interactions and dynamic updates, giving users a modern, responsive experience.
+- **Vue.js**: Vue.js powers the front-end, enabling a reactive and component-based UI. It ensures seamless interactions and dynamic updates, giving users a modern, responsive experience.
 
-- **Electron**: Electron is used to package Frappe Books as a standalone desktop application, allowing it to run offline and provide a native-like experience across Windows, macOS, and Linux.
+- **Electron**: Electron is used to package Bill Book as a standalone desktop application, allowing it to run offline and provide a native-like experience across Windows, macOS, and Linux.
 
-- **SQLite**: Frappe Books uses SQLite as its local database. All financial data, transactions, and configurations are stored securely in an SQLite file on the user's machine.
+- **SQLite**: SQLite is used as the local database. All billing data, transactions, and configurations are stored securely in an SQLite file on the user's machine.
+
+- **Advanced Licensing**: Custom licensing system with obfuscated secret keys and expiry validation.
+
+- **Automated Updates**: Integrated update system that checks GitHub releases for new versions.
 
 ## Production Setup
 
@@ -99,20 +103,20 @@ Next, you will need to install [yarn](https://classic.yarnpkg.com/lang/en/docs/i
 ### Clone and Run
 
 Once you are through the Pre-requisites, you can run the following commands to
-setup Frappe Books for development and building:
+setup Bill Book for development and building:
 
 ```bash
 # clone the repository
-git clone https://github.com/frappe/books.git
+git clone https://github.com/hardik2015/books-2026.git
 
 # change directory
-cd books
+cd books-2026
 
 # install dependencies
 yarn
 ```
 
-To run Frappe Books in development mode (with hot reload, etc):
+To run Bill Book in development mode (with hot reload, etc):
 
 ```bash
 # start the electron app
@@ -130,13 +134,13 @@ sent.
 
 When in dev mode electron runs with the `--inspect` flag which allows an
 external debugger to connect to port 5858. You can use chrome for this by
-visiting `chrome://inspect` while Frappe Books is running in dev mode.
+visiting `chrome://inspect` while Bill Book is running in dev mode.
 
 See more [here](https://www.electronjs.org/docs/latest/tutorial/debugging-main-process#external-debuggers).
 
 #### Build
 
-To build Frappe Books and create an installer:
+To build Bill Book and create an installer:
 
 ```bash
 # start the electron app
@@ -153,12 +157,12 @@ So to build for linux you could use the `--linux` flag like so: `yarn build --li
 
 ## Want to Just Try Out or Contribute?
 
-If you want to contribute to Frappe Books, please check our [Contribution Guidelines](https://github.com/frappe/books/blob/master/.github/CONTRIBUTING.md). There are many ways you can contribute even if you don't code:
+If you want to contribute to Bill Book, please check our [Contribution Guidelines](https://github.com/hardik2015/books-2026/blob/master/.github/CONTRIBUTING.md). There are many ways you can contribute even if you don't code:
 
-1. If you find any issues, no matter how small (even typos), you can [raise an issue](https://github.com/frappe/books/issues/new) to inform us.
-2. You can help us with language support by [contributing translations](https://github.com/frappe/books/wiki/Contributing-Translations).
+1. If you find any issues, no matter how small (even typos), you can [raise an issue](https://github.com/hardik2015/books-2026/issues/new) to inform us.
+2. You can help us with language support by [contributing translations](https://github.com/hardik2015/books-2026/wiki/Contributing-Translations).
 3. If you're an ardent user you can tell us what you would like to see.
-4. If you have accounting requirements, you can become an ardent user. 🙂
+4. If you have billing and invoicing requirements, you can become an ardent user. 🙂
 
 If you want to contribute code then you can fork this repo, make changes and raise a PR. ([see how to](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork))
 
@@ -186,5 +190,10 @@ If you want to contribute code then you can fork this repo, make changes and rai
 
 ## Learn and connect
 
-- [Telegram Group](https://t.me/frappebooks): Used for discussions and decisions regarding everything Frappe Books.
-- [GitHub Discussions](https://github.com/frappe/books/discussions): Used for discussions around a specific topic.
+- [GitHub Discussions](https://github.com/hardik2015/books-2026/discussions): Used for discussions around a specific topic.
+
+---
+
+## Original Software Notice
+
+This software is a derivative work based on Frappe Books, originally developed by Frappe Technologies Pvt. Ltd. and licensed under the terms of the GNU Affero General Public License v3.0 (AGPL-3.0). The original software is available at https://github.com/frappe/books. This derivative work maintains compliance with the AGPL-3.0 license terms while introducing modifications as described in the changelog.

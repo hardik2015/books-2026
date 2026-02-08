@@ -26,16 +26,12 @@ export async function validateLicenseBinding(fyo: Fyo): Promise<boolean> {
     // Create objects to compare
     const storedCompanyInfo: CompanyInfo = {
       companyName: accountingSettings.companyName || '',
-      email: accountingSettings.email || '',
-      instanceId: systemSettings.instanceId || '',
-      companyRegistrationNumber: systemSettings.boundCompanyRegistrationNumber
+      email: accountingSettings.email || ''
     };
-    
+
     const boundCompanyInfo: CompanyInfo = {
       companyName: systemSettings.boundCompanyName || '',
-      email: accountingSettings.email || '', // Use accounting settings email as it's the source of truth
-      instanceId: systemSettings.instanceId || '',
-      companyRegistrationNumber: systemSettings.boundCompanyRegistrationNumber
+      email: accountingSettings.email || '' // Use accounting settings email as it's the source of truth
     };
     
     // Verify that the stored company details match the bound license details

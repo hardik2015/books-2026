@@ -38,13 +38,14 @@ export default async function setupInstance(
     setupWizardOptions;
 
   // Verify license key before proceeding with database creation
+  const { licenseExpiryDate, ...otherOptions } = setupWizardOptions;
+
   if (licenseKey) {
     // Prepare company information for license binding
     const companyInfo: CompanyInfo = {
       companyName,
       email,
-      instanceId: getRandomString(), // Generate unique instance ID
-      companyRegistrationNumber: setupWizardOptions.companyRegistrationNumber // If available in options
+      expiryDate: licenseExpiryDate || ''  // Use empty string if no expiry date provided
     };
 
     const verificationResult = await verifyLicenseKey(licenseKey, companyInfo);
@@ -143,7 +144,7 @@ async function updatePrintSettings(
 }
 
 async function updateSystemSettings(
-  { country, currency: companyCurrency, licenseKey, companyName, email, companyRegistrationNumber }: SetupWizardOptions,
+  { country, currency: companyCurrency, licenseKey, companyName, email, licenseExpiryDate }: SetupWizardOptions,
   fyo: Fyo
 ) {
   const countryInfo = getCountryInfo();
@@ -170,8 +171,12 @@ async function updateSystemSettings(
   // Add bound company information if license is provided
   if (licenseKey && companyName) {
     systemSettingsData.boundCompanyName = companyName;
-    systemSettingsData.boundCompanyRegistrationNumber = companyRegistrationNumber;
     systemSettingsData.licenseBound = true; // Mark that license is bound
+  }
+
+  // Add license expiry date if provided
+  if (licenseExpiryDate) {
+    systemSettingsData.boundLicenseExpiryDate = licenseExpiryDate;
   }
 
   await systemSettings.setAndSync(systemSettingsData);
@@ -285,6 +290,7 @@ async function setDefaultAccount(key: string, accountName: string, fyo: Fyo) {
 async function completeSetup(companyName: string, fyo: Fyo) {
   const accountingSettings = await fyo.doc.getDoc('AccountingSettings');
   await accountingSettings.setAndSync('setupComplete', true);
+
 }
 
 async function checkAndCreateDoc(

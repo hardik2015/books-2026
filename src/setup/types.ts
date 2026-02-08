@@ -10,5 +10,5 @@ export interface SetupWizardOptions {
   fiscalYearEnd: string;
   chartOfAccounts: string;
   licenseKey?: string;
-  companyRegistrationNumber?: string;
+  licenseExpiryDate?: string;
 }

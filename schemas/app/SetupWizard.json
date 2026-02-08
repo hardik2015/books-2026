@@ -90,12 +90,12 @@
       "description": "Enter your license key for this installation"
     },
     {
-      "fieldname": "companyRegistrationNumber",
-      "label": "Company Registration Number",
-      "fieldtype": "Data",
-      "placeholder": "Enter company registration number",
+      "fieldname": "licenseExpiryDate",
+      "label": "License Expiry Date",
+      "fieldtype": "Date",
+      "placeholder": "DD/MM/YYYY",
       "section": "Licensing",
-      "description": "Company registration number for license binding"
+      "description": "Expiration date for the license"
     },
     {
       "fieldname": "completed",
@@ -114,6 +114,6 @@
     "fiscalYearStart",
     "fiscalYearEnd",
     "licenseKey",
-    "companyRegistrationNumber"
+    "licenseExpiryDate"
   ]
 }
