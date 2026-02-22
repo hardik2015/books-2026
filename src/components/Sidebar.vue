@@ -143,24 +143,6 @@
         <p>{{ t`Change DB` }}</p>
       </button>
 
-      <button
-        class="
-          flex
-          text-sm text-gray-600
-          dark:text-gray-500
-          hover:text-gray-800
-          dark:hover:text-gray-400
-          gap-1
-          items-center
-        "
-        @click="() => reportIssue()"
-      >
-        <feather-icon name="flag" class="h-4 w-4 flex-shrink-0" />
-        <p>
-          {{ t`Report Issue` }}
-        </p>
-      </button>
-
       <p
         v-if="showDevMode"
         class="text-xs text-gray-500 select-none cursor-pointer"
@@ -197,7 +179,6 @@
   </div>
 </template>
 <script lang="ts">
-import { reportIssue } from 'src/errorHandling';
 import { fyo } from 'src/initFyo';
 import { languageDirectionKey, shortcutsKey } from 'src/utils/injectionKeys';
 import { docsPathRef } from 'src/utils/refs';
@@ -271,7 +252,6 @@ export default defineComponent({
   },
   methods: {
     routeTo,
-    reportIssue,
     toggleSidebar,
     setActiveGroup() {
       const { fullPath } = this.$router.currentRoute.value;

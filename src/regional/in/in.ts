@@ -1,6 +1,6 @@
 import { Fyo } from 'fyo';
 
-export type TaxType = 'GST' | 'IGST' | 'Exempt-GST' | 'Exempt-IGST';
+export type TaxType = 'GST' | 'Exempt';
 
 export async function createIndianRecords(fyo: Fyo) {
   await createTaxes(fyo);
@@ -9,9 +9,7 @@ export async function createIndianRecords(fyo: Fyo) {
 async function createTaxes(fyo: Fyo) {
   const GSTs = {
     GST: [28, 18, 12, 6, 5, 3, 0.25, 0],
-    IGST: [28, 18, 12, 6, 5, 3, 0.25, 0],
-    'Exempt-GST': [0],
-    'Exempt-IGST': [0],
+    'Exempt': [0],
   };
 
   for (const type of Object.keys(GSTs)) {
@@ -26,22 +24,43 @@ async function createTaxes(fyo: Fyo) {
 }
 
 function getTaxDetails(type: TaxType, percent: number) {
-  if (type === 'GST') {
+  if (type === 'Exempt') {
     return [
       {
+        taxType: 'CGST',
         account: 'CGST',
-        rate: percent / 2,
+        rate: 0,
       },
       {
+        taxType: 'SGST',
         account: 'SGST',
-        rate: percent / 2,
+        rate: 0,
+      },
+      {
+        taxType: 'IGST',
+        account: 'IGST',
+        rate: 0,
       },
     ];
   }
 
+  // For GST, create all three components: CGST, SGST, and IGST
+  // CGST and SGST are half of the total rate (for intra-state)
+  // IGST is the full rate (for inter-state)
   return [
     {
-      account: type.toString().split('-')[0],
+      taxType: 'CGST',
+      account: 'CGST',
+      rate: percent / 2,
+    },
+    {
+      taxType: 'SGST',
+      account: 'SGST',
+      rate: percent / 2,
+    },
+    {
+      taxType: 'IGST',
+      account: 'IGST',
       rate: percent,
     },
   ];

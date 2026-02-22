@@ -184,11 +184,24 @@ export default defineComponent({
         return;
       }
 
-      await this.doc.set('companyName', "Lin's Things");
-      await this.doc.set('email', 'lin@lthings.com');
-      await this.doc.set('fullname', 'Lin Slovenly');
-      await this.doc.set('bankName', 'Max Finance');
+      // Company Details
+      await this.doc.set('companyName', 'herry1');
+      await this.doc.set('fullname', 'Hardik Joshi');
+      await this.doc.set('email', 'herry1@gmail.com');
+
+      // Locale
       await this.doc.set('country', 'India');
+      await this.doc.set('currency', 'INR');
+
+      // Accounting
+      await this.doc.set('bankName', 'HDFC Bank');
+      await this.doc.set('chartOfAccounts', 'India - Chart of Accounts');
+      await this.doc.set('fiscalYearStart', new Date('2024-04-01'));
+      await this.doc.set('fiscalYearEnd', new Date('2025-03-31'));
+
+      // Licensing
+      await this.doc.set('licenseKey', 'E4019ACE4557A0E97E905DE29ABA5085');
+      await this.doc.set('licenseExpiryDate', '31/12/2027');
     },
     async onValueChange(field: Field, value: DocValue) {
       if (!this.hasDoc) {

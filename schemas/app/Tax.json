@@ -4,6 +4,7 @@
   "naming": "manual",
   "isSingle": false,
   "isChild": false,
+  "isSubmittable": false,
   "fields": [
     {
       "fieldname": "name",

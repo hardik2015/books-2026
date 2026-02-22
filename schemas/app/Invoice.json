@@ -67,6 +67,23 @@
       "section": "Tax and Totals"
     },
     {
+      "fieldname": "taxType",
+      "label": "Tax Type",
+      "fieldtype": "Radio",
+      "options": [
+        {
+          "value": "Intra-State (CGST + SGST)",
+          "label": "Intra-State (CGST + SGST)"
+        },
+        {
+          "value": "Inter-State (IGST)",
+          "label": "Inter-State (IGST)"
+        }
+      ],
+      "default": "Intra-State (CGST + SGST)",
+      "section": "Tax and Totals"
+    },
+    {
       "fieldname": "baseGrandTotal",
       "label": "Base Grand Total",
       "fieldtype": "Currency",

@@ -92,10 +92,10 @@
     {
       "fieldname": "licenseExpiryDate",
       "label": "License Expiry Date",
-      "fieldtype": "Date",
-      "placeholder": "DD/MM/YYYY",
+      "fieldtype": "Data",
+      "placeholder": "DD/MM/YYYY (e.g., 31/12/2027)",
       "section": "Licensing",
-      "description": "Expiration date for the license"
+      "description": "Expiration date for the license (format: DD/MM/YYYY)"
     },
     {
       "fieldname": "completed",

@@ -112,9 +112,32 @@ export abstract class InvoiceItem extends Doc {
       return 0;
     }
 
-    const details =
-      ((await this.fyo.getValue('Tax', this.tax, 'details')) as Doc[]) ?? [];
-    return details.reduce((acc, doc) => {
+    // Get the tax type from the parent invoice (Intra-State or Inter-State)
+    // Default to Intra-State if not set
+    const invoiceTaxType = this.parentdoc?.taxType || 'Intra-State (CGST + SGST)';
+    const isIntraState = invoiceTaxType === 'Intra-State (CGST + SGST)';
+
+    // Get tax details from the Tax template
+    const taxDoc = await this.fyo.doc.getDoc('Tax', this.tax);
+    if (!taxDoc) {
+      return 0;
+    }
+
+    const details = (taxDoc.details as Doc[]) ?? [];
+    
+    // Filter details based on taxType selection
+    // For Intra-State: sum CGST + SGST rates
+    // For Inter-State: use IGST rate only
+    const filteredDetails = details.filter((detail) => {
+      const taxType = detail.taxType as string;
+      if (isIntraState) {
+        return taxType === 'CGST' || taxType === 'SGST';
+      } else {
+        return taxType === 'IGST';
+      }
+    });
+
+    return filteredDetails.reduce((acc, doc) => {
       return (doc.rate as number) + acc;
     }, 0);
   }

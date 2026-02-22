@@ -22,6 +22,7 @@ export const sqliteTypeMap: Record<string, KnexColumnType> = {
   DynamicLink: 'text',
   Password: 'text',
   Select: 'text',
+  Radio: 'text',
   Attachment: 'text',
   AttachImage: 'text',
   Color: 'text',

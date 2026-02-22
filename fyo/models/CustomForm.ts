@@ -49,7 +49,11 @@ export class CustomForm extends Doc {
         })),
   };
 
-  hidden: HiddenMap = { customFields: () => !this.name };
+  hidden: HiddenMap = {
+    customFields: function() {
+      return !this.name;
+    },
+  };
 
   // eslint-disable-next-line @typescript-eslint/require-await
   override async validate(): Promise<void> {

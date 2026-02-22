@@ -17,7 +17,8 @@ export type FieldType =
   | 'Text'
   | 'Color'
   | 'Button'
-  | 'Attachment';
+  | 'Attachment'
+  | 'Radio';
 
 export const FieldTypeEnum: PropertyEnum<Record<FieldType, FieldType>> = {
   Data: 'Data',
@@ -37,9 +38,10 @@ export const FieldTypeEnum: PropertyEnum<Record<FieldType, FieldType>> = {
   Color: 'Color',
   Button: 'Button',
   Attachment: 'Attachment',
+  Radio: 'Radio',
 };
 
-type OptionFieldType = 'Select' | 'AutoComplete' | 'Color';
+type OptionFieldType = 'Select' | 'AutoComplete' | 'Color' | 'Radio';
 type TargetFieldType = 'Table' | 'Link';
 type NumberFieldType = 'Int' | 'Float';
 type DynamicLinkFieldType = 'DynamicLink';

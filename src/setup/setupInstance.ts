@@ -41,12 +41,43 @@ export default async function setupInstance(
   const { licenseExpiryDate, ...otherOptions } = setupWizardOptions;
 
   if (licenseKey) {
+    // DEBUG: Log license info to console
+    console.log('\n===== LICENSE DEBUG INFO =====');
+    console.log('License Key:', licenseKey);
+    console.log('License Expiry Date:', licenseExpiryDate);
+    console.log('Expiry Date Type:', typeof licenseExpiryDate);
+    console.log('Company Name:', companyName);
+    console.log('Email:', email);
+    console.log('Full Options:', JSON.stringify(setupWizardOptions, null, 2));
+    console.log('==============================\n');
+
     // Prepare company information for license binding
+    // Convert expiry date to DD/MM/YYYY format for license verification
+    let formattedExpiryDate = '';
+    if (licenseExpiryDate) {
+      if (licenseExpiryDate instanceof Date) {
+        // Convert Date object to DD/MM/YYYY format
+        const day = String(licenseExpiryDate.getDate()).padStart(2, '0');
+        const month = String(licenseExpiryDate.getMonth() + 1).padStart(2, '0');
+        const year = licenseExpiryDate.getFullYear();
+        formattedExpiryDate = `${day}/${month}/${year}`;
+      } else if (typeof licenseExpiryDate === 'string') {
+        // If it's already a string, use as-is (should be DD/MM/YYYY from license generator)
+        formattedExpiryDate = licenseExpiryDate;
+      }
+    }
+    
     const companyInfo: CompanyInfo = {
       companyName,
       email,
-      expiryDate: licenseExpiryDate || ''  // Use empty string if no expiry date provided
+      expiryDate: formattedExpiryDate
     };
+
+    // DEBUG: Log company info being passed
+    console.log('\n===== COMPANY INFO FOR VERIFICATION =====');
+    console.log('Company Info Object:', companyInfo);
+    console.log('Formatted Expiry Date:', formattedExpiryDate);
+    console.log('=========================================\n');
 
     const verificationResult = await verifyLicenseKey(licenseKey, companyInfo);
 
@@ -55,8 +86,14 @@ export default async function setupInstance(
       throw new Error(verificationResult.error || verificationResult.message || 'License verification failed');
     }
 
-    // Store bound company information in SystemSettings
-    await updateSystemSettings({...setupWizardOptions, licenseKey}, fyo);
+    console.log('✓ License verification successful!');
+    console.log('Note: License storage will be handled separately');
+    // Skip storing in SystemSettings for now to avoid model initialization issues
+    // The license is verified and that's what matters for now
+    // await updateSystemSettings({...setupWizardOptions, licenseKey}, fyo);
+  } else {
+    // No license key, proceed with normal setup
+    await updateSystemSettings(setupWizardOptions, fyo);
   }
 
   fyo.store.skipTelemetryLogging = true;

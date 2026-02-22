@@ -5,7 +5,7 @@
       "fieldname": "gstType",
       "label": "GST Registration",
       "placeholder": "GST Registration",
-      "fieldtype": "Select",
+      "fieldtype": "Radio",
       "default": "Unregistered",
       "options": [
         {
@@ -21,13 +21,15 @@
           "label": "Consumer"
         }
       ],
-      "section": "Billing"
+      "section": "GST"
     },
     {
       "fieldname": "gstin",
       "label": "GSTIN No.",
       "fieldtype": "Data",
-      "section": "Billing"
+      "placeholder": "27AAAAA0000A1Z5",
+      "section": "GST",
+      "depends_on": "eval:doc.gstType === 'Registered Regular'"
     }
   ],
   "quickEditFields": [

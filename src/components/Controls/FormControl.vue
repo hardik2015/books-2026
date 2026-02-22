@@ -14,6 +14,7 @@ import DynamicLink from './DynamicLink.vue';
 import Float from './Float.vue';
 import Int from './Int.vue';
 import Link from './Link.vue';
+import Radio from './Radio.vue';
 import Select from './Select.vue';
 import Text from './Text.vue';
 import Secret from './Secret.vue';
@@ -36,6 +37,7 @@ const components = {
   Currency,
   Text,
   Secret,
+  Radio,
 };
 
 export default {

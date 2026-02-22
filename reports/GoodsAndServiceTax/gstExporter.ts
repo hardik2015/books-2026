@@ -20,14 +20,6 @@ const GST = {
   'GST-12': 12,
   'GST-18': 18,
   'GST-28': 28,
-  'IGST-0': 0,
-  'IGST-0.25': 0.25,
-  'IGST-3': 3,
-  'IGST-5': 5,
-  'IGST-6': 6,
-  'IGST-12': 12,
-  'IGST-18': 18,
-  'IGST-28': 28,
 } as Record<string, number>;
 
 const CSGST = {
@@ -42,13 +34,14 @@ const CSGST = {
 } as Record<string, number>;
 
 const IGST = {
-  'IGST-0.25': 0.25,
-  'IGST-3': 3,
-  'IGST-5': 5,
-  'IGST-6': 6,
-  'IGST-12': 12,
-  'IGST-18': 18,
-  'IGST-28': 28,
+  'GST-0': 0,
+  'GST-0.25': 0.25,
+  'GST-3': 3,
+  'GST-5': 5,
+  'GST-6': 6,
+  'GST-12': 12,
+  'GST-18': 18,
+  'GST-28': 28,
 } as Record<string, number>;
 
 interface GSTData {

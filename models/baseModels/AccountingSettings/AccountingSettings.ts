@@ -119,53 +119,59 @@ export class AccountingSettings extends Doc {
   readOnly: ReadOnlyMap = {
     companyName: function() {
       // Make company name read-only after setup is complete
-      return !!this.setupComplete;
+      return !!(this as AccountingSettings).setupComplete;
     },
     fullname: function() {
       // Make fullname read-only after setup is complete
-      return !!this.setupComplete;
+      return !!(this as AccountingSettings).setupComplete;
     },
     email: function() {
       // Make email read-only after setup is complete
-      return !!this.setupComplete;
+      return !!(this as AccountingSettings).setupComplete;
     },
     country: function() {
       // Make country read-only after setup is complete
-      return !!this.setupComplete;
+      return !!(this as AccountingSettings).setupComplete;
     },
-    enableDiscounting: () => {
+    enableDiscounting: function() {
       return !!this.enableDiscounting;
     },
-    enableInventory: () => {
+    enableInventory: function() {
       return !!this.enableInventory;
     },
-    enableLead: () => {
+    enableLead: function() {
       return !!this.enableLead;
     },
-    enableERPNextSync: () => {
+    enableERPNextSync: function() {
       return !!this.enableERPNextSync;
     },
-    enableInvoiceReturns: () => {
+    enableInvoiceReturns: function() {
       return !!this.enableInvoiceReturns;
     },
-    enableLoyaltyProgram: () => {
+    enableLoyaltyProgram: function() {
       return !!this.enableLoyaltyProgram;
     },
-    enablePointOfSaleWithOutInventory: () => {
+    enablePointOfSaleWithOutInventory: function() {
       return !!this.enablePointOfSaleWithOutInventory;
     },
-    enableitemGroup: () => {
+    enableitemGroup: function() {
       return !!this.enableitemGroup;
     },
   };
 
   override hidden: HiddenMap = {
-    discountAccount: () => !this.enableDiscounting,
-    gstin: () => this.fyo.singles.SystemSettings?.countryCode !== 'in',
-    enablePricingRule: () =>
-      !this.fyo.singles.AccountingSettings?.enableDiscounting,
-    enableCouponCode: () =>
-      !this.fyo.singles.AccountingSettings?.enablePricingRule,
+    discountAccount: function() {
+      return !this.enableDiscounting;
+    },
+    gstin: function() {
+      return this.fyo.singles.SystemSettings?.countryCode !== 'in';
+    },
+    enablePricingRule: function() {
+      return !this.fyo.singles.AccountingSettings?.enableDiscounting;
+    },
+    enableCouponCode: function() {
+      return !this.fyo.singles.AccountingSettings?.enablePricingRule;
+    },
   };
 
   async change(ch: ChangeArg) {

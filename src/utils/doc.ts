@@ -50,7 +50,7 @@ function evaluateFieldMeta(
 
   const evalFunction = doc?.[meta]?.[field.fieldname];
   if (evalFunction !== undefined) {
-    return evalFunction();
+    return evalFunction.call(doc);
   }
 
   return defaultValue;

@@ -15,24 +15,36 @@ export async function initializeInstance(
   countryCode: string,
   fyo: Fyo
 ) {
-  if (isNew) {
-    await closeDbIfConnected(fyo);
-    countryCode = await fyo.db.createNewDatabase(dbPath, countryCode);
-  } else if (!fyo.db.isConnected) {
-    countryCode = await fyo.db.connectToDatabase(dbPath);
+  try {
+    if (isNew) {
+      await closeDbIfConnected(fyo);
+      countryCode = await fyo.db.createNewDatabase(dbPath, countryCode);
+    } else if (!fyo.db.isConnected) {
+      countryCode = await fyo.db.connectToDatabase(dbPath);
+    }
+
+    const regionalModels = await getRegionalModels(countryCode);
+    await fyo.initializeAndRegister(models, regionalModels);
+
+    await checkSingleLinks(fyo);
+    await setSingles(fyo);
+    await setCreds(fyo);
+    await setVersion(fyo);
+    setDeviceId(fyo);
+    await setInstanceId(fyo);
+    await setOpenCount(fyo);
+    await setCurrencySymbols(fyo);
+  } catch (error) {
+    console.error('Error in initializeInstance:', {
+      dbPath,
+      isNew,
+      countryCode,
+      error,
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+    throw error;
   }
-
-  const regionalModels = await getRegionalModels(countryCode);
-  await fyo.initializeAndRegister(models, regionalModels);
-
-  await checkSingleLinks(fyo);
-  await setSingles(fyo);
-  await setCreds(fyo);
-  await setVersion(fyo);
-  setDeviceId(fyo);
-  await setInstanceId(fyo);
-  await setOpenCount(fyo);
-  await setCurrencySymbols(fyo);
 }
 
 async function closeDbIfConnected(fyo: Fyo) {

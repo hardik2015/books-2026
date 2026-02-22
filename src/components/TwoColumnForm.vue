@@ -108,7 +108,7 @@ export default defineComponent({
   },
   methods: {
     getFieldHeight(field: Field) {
-      if (['AttachImage', 'Text'].includes(field.fieldtype)) {
+      if (['AttachImage', 'Text', 'Radio'].includes(field.fieldtype)) {
         return 'calc((var(--h-row-mid) + 1px) * 2)';
       }
 

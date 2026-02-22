@@ -1,0 +1,70 @@
+╔══════════════════════════════════════════════════════════════╗
+║          LICENSE KEY GENERATOR - INSTRUCTIONS                ║
+╚══════════════════════════════════════════════════════════════╝
+
+CURRENT LICENSE KEY FOR herry:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Company:   herry
+  Email:     herry@gmail.com
+  Expiry:    31/12/2027 (31st December 2027)
+  
+  ★ License Key: F537A0353404484AB54759D25212C61B ★
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HOW TO USE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Copy the license key above (F537A0353404484AB54759D25212C61B)
+
+2. In the application, enter:
+   - Company Name: herry
+   - Email: herry@gmail.com
+   - License Key: F537A0353404484AB54759D25212C61B
+
+3. The license should validate successfully
+
+IF YOU STILL GET "LICENSE HAS EXPIRED" ERROR:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The issue might be:
+
+a) DATE FORMAT: Make sure your system date is correct
+   - Today's date: 21/02/2026
+   - License expires: 31/12/2027
+   - The license should NOT be expired!
+
+b) COMPANY NAME MISMATCH:
+   - The name must match exactly (spaces are removed)
+   - "herry" = "herry" ✓
+   - "Herry" = "herry" ✓ (case insensitive)
+   - "Harry" ≠ "herry" ✗
+
+c) EMAIL MISMATCH:
+   - Must match exactly (case insensitive)
+   - "herry@gmail.com" = "herry@gmail.com" ✓
+   - "Herry@Gmail.com" = "herry@gmail.com" ✓
+   - "herry@gm ail.com" ≠ "herry@gmail.com" ✗
+
+d) APPLICATION NEEDS REBUILD:
+   - If you modified the source code, rebuild the app
+   - Run: yarn build
+   - Then restart the application
+
+GENERATE NEW LICENSE KEY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+To generate a new license key, edit this file:
+  F:\Repogit\books-2026\license_generator.js
+
+Change these values:
+  const companyName = 'Your Company Name';
+  const email = 'your@email.com';
+  const expiryDate = 'DD/MM/YYYY';
+
+Then run:
+  node license_generator.js
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Technical Details:
+- Secret Key Length: 125 characters
+- Hash Algorithm: SHA-256
+- License Key Length: 32 characters (uppercase hex)
+- Date Format: DD/MM/YYYY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

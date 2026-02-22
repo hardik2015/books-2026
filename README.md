@@ -1,7 +1,7 @@
 <div align="center" markdown="1">
 <br/>
 
-<img src="https://frappe.io/files/books.png" alt="Bill Book logo" width="80"/>
+<img src="./logo.png" alt="Bill Book logo" width="80"/>
 
 <br/>
 

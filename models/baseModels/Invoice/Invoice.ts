@@ -56,6 +56,7 @@ import { PricingRuleItem } from '../PricingRuleItem/PricingRuleItem';
 import { getLinkedEntries } from 'src/utils/doc';
 
 export type TaxDetail = {
+  taxType: string;
   account: string;
   payment_account?: string;
   rate: number;
@@ -78,6 +79,7 @@ export type InvoiceTaxItem = {
 export abstract class Invoice extends Transactional {
   _taxes: Record<string, Tax> = {};
   taxes?: TaxSummary[];
+  taxType?: string;
 
   items?: InvoiceItem[];
   coupons?: AppliedCouponCodes[];
@@ -355,13 +357,32 @@ export abstract class Invoice extends Transactional {
 
   async getTaxItems(): Promise<InvoiceTaxItem[]> {
     const taxItems: InvoiceTaxItem[] = [];
+
+    // Get the tax type from the invoice (Intra-State or Inter-State)
+    // Default to Intra-State if not set
+    const invoiceTaxType = this.taxType || 'Intra-State (CGST + SGST)';
+    const isIntraState = invoiceTaxType === 'Intra-State (CGST + SGST)';
+
     for (const item of this.items ?? []) {
       if (!item.tax) {
         continue;
       }
 
       const tax = await this.getTax(item.tax);
-      for (const details of (tax.details ?? []) as TaxDetail[]) {
+
+      // Filter tax details based on invoice's taxType selection
+      // For Intra-State: use CGST and SGST rows
+      // For Inter-State: use IGST row only
+      const taxDetails = (tax.details ?? []) as TaxDetail[];
+      const filteredDetails = taxDetails.filter((detail) => {
+        if (isIntraState) {
+          return detail.taxType === 'CGST' || detail.taxType === 'SGST';
+        } else {
+          return detail.taxType === 'IGST';
+        }
+      });
+
+      for (const details of filteredDetails) {
         let amount = item.amount!;
 
         if (this.isReturn && amount.isPositive()) {
@@ -394,6 +415,45 @@ export abstract class Invoice extends Transactional {
     }
 
     return taxItems;
+  }
+
+  async getIsIntraState(): Promise<boolean> {
+    // Get the company GSTIN from AccountingSettings
+    const companyGstin = (await this.fyo.getValue(
+      ModelNameEnum.AccountingSettings,
+      'gstin'
+    )) as string | null;
+
+    if (!companyGstin) {
+      return true; // Default to intra-state if company GSTIN not set
+    }
+
+    // Get party's GSTIN or address to determine state
+    const party = (await this.fyo.doc.getDoc(
+      ModelNameEnum.Party,
+      this.party
+    )) as Party;
+
+    let partyStateCode = '';
+
+    if (party.gstin) {
+      // Extract state code from GSTIN (first 2 digits)
+      partyStateCode = party.gstin.slice(0, 2);
+    } else if (party.address) {
+      // Get state from address
+      const pos = (await this.fyo.getValue(
+        ModelNameEnum.Address,
+        party.address as string,
+        'pos'
+      )) as string | undefined;
+
+      if (pos) {
+        partyStateCode = pos;
+      }
+    }
+
+    const companyStateCode = companyGstin.slice(0, 2);
+    return companyStateCode === partyStateCode;
   }
 
   async getTaxSummary() {

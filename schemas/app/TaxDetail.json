@@ -5,8 +5,28 @@
   "isChild": true,
   "fields": [
     {
+      "fieldname": "taxType",
+      "label": "Tax Type",
+      "fieldtype": "Radio",
+      "options": [
+        {
+          "value": "CGST",
+          "label": "CGST"
+        },
+        {
+          "value": "SGST",
+          "label": "SGST"
+        },
+        {
+          "value": "IGST",
+          "label": "IGST"
+        }
+      ],
+      "required": true
+    },
+    {
       "fieldname": "account",
-      "label": "Tax Invoice Account",
+      "label": "Tax Account",
       "fieldtype": "Link",
       "target": "Account",
       "create": true,
@@ -28,5 +48,5 @@
       "placeholder": "0%"
     }
   ],
-  "tableFields": ["account", "payment_account", "rate"]
+  "tableFields": ["taxType", "account", "rate"]
 }

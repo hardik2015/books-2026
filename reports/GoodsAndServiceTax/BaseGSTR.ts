@@ -194,24 +194,34 @@ export abstract class BaseGSTR extends Report {
   setTaxValuesOnGSTRRow(entry: Invoice, gstrRow: GSTRRow) {
     for (const tax of entry.taxes ?? []) {
       const rate = tax.rate ?? 0;
-      gstrRow.rate += rate;
       const taxAmt = entry.netTotal!.percent(rate).float;
+      const account = tax.account;
 
-      switch (tax.account) {
-        case 'IGST': {
-          gstrRow.igstAmt = taxAmt;
+      // Determine if intra-state or inter-state based on party location
+      const isIntraState = gstrRow.inState;
+
+      if (account === 'IGST') {
+        // Only apply IGST for inter-state transactions
+        if (!isIntraState) {
+          gstrRow.igstAmt = (gstrRow.igstAmt ?? 0) + taxAmt;
           gstrRow.inState = false;
         }
-        case 'CGST':
-          gstrRow.cgstAmt = taxAmt;
-        case 'SGST':
-          gstrRow.sgstAmt = taxAmt;
-        case 'Nil Rated':
-          gstrRow.nilRated = true;
-        case 'Exempt':
-          gstrRow.exempt = true;
-        case 'Non GST':
-          gstrRow.nonGST = true;
+      } else if (account === 'CGST') {
+        // Only apply CGST for intra-state transactions
+        if (isIntraState) {
+          gstrRow.cgstAmt = (gstrRow.cgstAmt ?? 0) + taxAmt;
+        }
+      } else if (account === 'SGST') {
+        // Only apply SGST for intra-state transactions
+        if (isIntraState) {
+          gstrRow.sgstAmt = (gstrRow.sgstAmt ?? 0) + taxAmt;
+        }
+      } else if (account === 'Nil Rated') {
+        gstrRow.nilRated = true;
+      } else if (account === 'Exempt') {
+        gstrRow.exempt = true;
+      } else if (account === 'Non GST') {
+        gstrRow.nonGST = true;
       }
     }
   }

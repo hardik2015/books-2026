@@ -103,9 +103,24 @@ function getSecretKey(): string {
 export async function generateLicenseKey(companyInfo: CompanyInfo): Promise<string> {
   // Remove spaces from company name before generating license key
   const sanitizedName = companyInfo.companyName.replace(/\s+/g, '');
-  const data = `${sanitizedName.toLowerCase()}|${companyInfo.email.toLowerCase()}|${companyInfo.expiryDate}|${getSecretKey()}`;
+  const secretKey = getSecretKey();
+  const data = `${sanitizedName.toLowerCase()}|${companyInfo.email.toLowerCase()}|${companyInfo.expiryDate}|${secretKey}`;
+  
+  // DEBUG: Log generation details
+  console.log('\n--- License Key Generation ---');
+  console.log('Sanitized Name:', sanitizedName);
+  console.log('Email:', companyInfo.email);
+  console.log('Expiry Date:', companyInfo.expiryDate);
+  console.log('Secret Key (first 20 chars):', secretKey.substring(0, 20) + '...');
+  console.log('Secret Key Length:', secretKey.length);
+  console.log('Full Payload:', data);
+  
   const hash = await simpleHash(data);
-  return hash.toUpperCase().substring(0, 32);
+  const result = hash.toUpperCase().substring(0, 32);
+  console.log('Generated Hash (first 32):', result);
+  console.log('------------------------------\n');
+  
+  return result;
 }
 
 /**
@@ -115,7 +130,18 @@ export async function generateLicenseKey(companyInfo: CompanyInfo): Promise<stri
  * @returns Promise<LicenseVerificationResult>
  */
 export async function verifyLicenseKey(licenseKey: string, companyInfo?: CompanyInfo): Promise<LicenseVerificationResult> {
+  // DEBUG: Log all input values
+  console.log('\n========== LICENSE VERIFICATION DEBUG ==========');
+  console.log('Input License Key:', licenseKey);
+  console.log('Input Company Info:', companyInfo);
+  console.log('Company Name:', companyInfo?.companyName);
+  console.log('Email:', companyInfo?.email);
+  console.log('Expiry Date:', companyInfo?.expiryDate);
+  console.log('Expiry Date Type:', typeof companyInfo?.expiryDate);
+  console.log('===============================================\n');
+
   if (!licenseKey || licenseKey.trim() === '') {
+    console.log('❌ ERROR: License key is empty');
     return {
       isValid: false,
       message: 'License key is required'
@@ -123,6 +149,7 @@ export async function verifyLicenseKey(licenseKey: string, companyInfo?: Company
   }
 
   if (!companyInfo) {
+    console.log('❌ ERROR: Company info is missing');
     return {
       isValid: false,
       message: 'Company information is required for license validation'
@@ -132,7 +159,10 @@ export async function verifyLicenseKey(licenseKey: string, companyInfo?: Company
   try {
     // Check if the license has expired
     const isExpired = checkLicenseExpiry(companyInfo.expiryDate);
+    console.log('License Expired Check:', isExpired ? '❌ EXPIRED' : '✓ VALID');
+    
     if (isExpired) {
+      console.log('❌ ERROR: License has expired');
       return {
         isValid: false,
         error: 'License has expired'
@@ -141,24 +171,32 @@ export async function verifyLicenseKey(licenseKey: string, companyInfo?: Company
 
     // Generate expected license key based on company info
     const expectedKey = await generateLicenseKey(companyInfo);
+    console.log('Expected Key (generated):', expectedKey);
+    console.log('Provided Key:', licenseKey);
+    console.log('Keys Match:', licenseKey.trim().toLowerCase() === expectedKey.toLowerCase() ? '✓ YES' : '❌ NO');
 
     // Compare the provided key with the expected key
     const isValid = licenseKey.trim().toLowerCase() === expectedKey.toLowerCase();
 
     if (isValid) {
+      console.log('✓ LICENSE VERIFICATION SUCCESSFUL');
+      console.log('===============================================\n');
       return {
         isValid: true,
         message: 'License is valid',
         boundCompany: companyInfo.companyName
       };
     } else {
+      console.log('❌ LICENSE VERIFICATION FAILED - Keys do not match');
+      console.log('===============================================\n');
       return {
         isValid: false,
         error: 'Invalid license key for provided company information'
       };
     }
   } catch (error) {
-    console.error('License verification error:', error);
+    console.error('❌ LICENSE VERIFICATION ERROR:', error);
+    console.log('===============================================\n');
     return {
       isValid: false,
       error: 'Error occurred during license verification'
@@ -168,19 +206,46 @@ export async function verifyLicenseKey(licenseKey: string, companyInfo?: Company
 
 /**
  * Check if the license has expired based on the expiry date
- * @param expiryDateString - Expiry date in DD/MM/YYYY format
+ * @param expiryDateString - Expiry date in DD/MM/YYYY or YYYY-MM-DD format, or Date object
  * @returns boolean indicating if the license is expired
  */
-function checkLicenseExpiry(expiryDateString: string): boolean {
+function checkLicenseExpiry(expiryDateString: string | Date): boolean {
   try {
-    // Parse the expiry date (DD/MM/YYYY format)
-    const [day, month, year] = expiryDateString.split('/').map(Number);
-    const expiryDate = new Date(year, month - 1, day); // month is 0-indexed in JS Date
+    let expiryDate: Date;
     
+    // Handle Date object
+    if (expiryDateString instanceof Date) {
+      expiryDate = expiryDateString;
+    } else if (!expiryDateString || expiryDateString.trim() === '') {
+      // Empty expiry date means no expiration (permanent license)
+      return false;
+    } else {
+      // Try DD/MM/YYYY format first
+      if (expiryDateString.includes('/')) {
+        const [day, month, year] = expiryDateString.split('/').map(Number);
+        expiryDate = new Date(year, month - 1, day);
+      } 
+      // Try YYYY-MM-DD format (ISO format from HTML date inputs)
+      else if (expiryDateString.includes('-')) {
+        const [year, month, day] = expiryDateString.split('-').map(Number);
+        expiryDate = new Date(year, month - 1, day);
+      }
+      // Try parsing as generic date string
+      else {
+        expiryDate = new Date(expiryDateString);
+      }
+    }
+
+    // Validate the date
+    if (isNaN(expiryDate.getTime())) {
+      console.error('Invalid expiry date:', expiryDateString);
+      return true; // Treat invalid dates as expired
+    }
+
     // Get today's date and compare
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Set time to start of day for accurate comparison
-    
+
     return expiryDate < today;
   } catch (error) {
     // If there's an error parsing the date, consider the license invalid
